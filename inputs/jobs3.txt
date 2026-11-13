@@ -1,0 +1,6 @@
+# job_id arrival_time burst_time
+# Test input 3: Idle gap (ready queue becomes empty between t=5 and t=10)
+P1 0 3
+P2 1 2
+P3 10 4
+P4 11 3

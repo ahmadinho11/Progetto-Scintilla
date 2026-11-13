@@ -1,0 +1,8 @@
+# job_id arrival_time burst_time
+# Test input 4: Algorithms produce very different results (Demonstrating SRTF preemption & starvation)
+P1 0 20
+P2 2 2
+P3 4 2
+P4 6 2
+P5 8 2
+P6 10 2
