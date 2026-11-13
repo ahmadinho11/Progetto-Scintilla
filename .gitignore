@@ -1,0 +1,15 @@
+# Binaries and object files
+scheduler
+report
+logger
+*.o
+
+# Log files and runtime outputs
+schedule.log
+*.log
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
