@@ -100,7 +100,7 @@ D. IPC Pipe & Logger:
      EOF, flushes, and cleanly terminates. waitpid() reaps child (no zombies).
 
 
-4. ASSUMPTIONS, CONVENTIONS & DESIGN DECISIONS
+4. ASSUMPTIONS, CONVENTIONS & KNOWN LIMITATIONS
 --------------------------------------------------------------------------------
 - Tie-breaking:
   If two jobs are equal under an algorithm, the job that arrived earlier is picked.
@@ -119,6 +119,10 @@ D. IPC Pipe & Logger:
 - Idle CPU:
   When the ready queue is empty while jobs remain uncompleted, the CPU state is IDLE.
   IDLE slices are displayed on console and recorded in the Gantt chart.
+- Known Limitations:
+  * Maximum supported concurrent jobs is 128 (configured via MAX_JOBS in common.h).
+  * Arrival and burst durations are whole non-negative integers.
+  * Designed for POSIX/Linux environments (requires pthreads, POSIX semaphores, and shm_open).
 
 
 5. TEST INPUT FILES
