@@ -1,22 +1,20 @@
 ================================================================================
 OPERATING SYSTEMS LAB | MINI CPU SCHEDULER
 Project: Progetto Scintilla (Mini CPU Scheduler)
-Platform: Linux / Ubuntu (C language, gcc, POSIX APIs)
 ================================================================================
 
 1. GROUP MEMBERS & CONTRIBUTION
---------------------------------------------------------------------------------
+
 Group Members:
-- Ahmad Raza (Roll No: [Roll Number 1]) - Scheduler Dispatcher, Thread Management, Semaphores (Parts 2 & 3)
-- [Member 2 Name] (Roll No: [Roll Number 2]) - Input Parsing, Job Table & Shared Memory Report (Parts 1 & 6)
-- [Member 3 Name] (Roll No: [Roll Number 3]) - Logger Process, IPC Pipes, Metrics & Gantt Chart (Parts 4 & 5)
+- Ahmad Raza (Roll No: 24i-2574) - Scheduler Dispatcher, Thread Management, Semaphores, Logger Process (Parts 2,3 & 3)
+- Ali Farooq (Roll No: 24i-2576) - IPC Pipes, Input Parsing, Job Table & Shared Memory Report, Metrics & Gantt Chart
 
 (Note: Every group member contributed to the architectural design, synchronization
 protocol, testing, and debugging.)
 
 
 2. HOW TO COMPILE AND RUN ON UBUNTU / LINUX
---------------------------------------------------------------------------------
+
 Prerequisites on Ubuntu:
   sudo apt-get update
   sudo apt-get install build-essential
@@ -56,7 +54,6 @@ Running with Custom Speed:
 
 
 3. SYNCHRONISATION TOOLS & ARCHITECTURE
---------------------------------------------------------------------------------
 A. Mutexes:
    - queue_mutex (pthread_mutex_t):
      Protects access to the shared Ready Queue (enqueue, dequeue, search, and
@@ -126,7 +123,6 @@ D. IPC Pipe & Logger:
 
 
 5. TEST INPUT FILES
---------------------------------------------------------------------------------
 - inputs/jobs1.txt: Project brief example (P1 0 5, P2 1 3, P3 2 8).
 - inputs/jobs2.txt: All 5 jobs arrive at time 0 (Convoy effect demonstration).
 - inputs/jobs3.txt: Contains an idle gap (queue becomes empty between t=5 and t=10).
