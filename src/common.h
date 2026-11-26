@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
@@ -17,7 +18,7 @@
 #include <sys/mman.h>
 #include <errno.h>
 #include <ctype.h>
-#include <time.h>
+#include <stdarg.h>
 
 #define MAX_JOBS 128
 #define MAX_NAME_LEN 32
@@ -26,7 +27,6 @@
 #define SHM_NAME "/mini_cpu_sched_shm"
 #define SEM_NAME "/mini_cpu_sched_sem"
 #define LOG_FILE "schedule.log"
-
 #define DEFAULT_TIME_UNIT_MS 50
 
 typedef enum {
@@ -44,16 +44,15 @@ typedef struct {
     int arrival_time;
     int burst_time;
     int remaining_time;
-    int first_start_time;   /* -1 if not started yet */
+    int first_start_time;
     int completion_time;
     int turnaround_time;
     int waiting_time;
     int response_time;
-    int priority;           /* Optional bonus */
+    int priority;
     int has_started;
-    int is_completed;
-    int terminate;          /* Thread exit signal */
-    sem_t run_sem;          /* Dispatcher -> Job handoff semaphore */
+    int terminate;
+    sem_t run_sem;
     pthread_t thread;
 } Job;
 

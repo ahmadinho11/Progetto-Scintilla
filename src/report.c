@@ -1,5 +1,10 @@
 #include "common.h"
 
+static void print_border(int count) {
+    for (int i = 0; i < count; i++) printf("+---------");
+    printf("+\n");
+}
+
 static void print_gantt_chart(const ReportData *data) {
     if (data->gantt_count == 0) {
         printf("No execution recorded in Gantt chart.\n");
@@ -9,45 +14,25 @@ static void print_gantt_chart(const ReportData *data) {
     printf("\n================================================================================\n");
     printf("                               GANTT CHART\n");
     printf("================================================================================\n");
-
-    /* Concise list representation */
     printf("Timeline Sequence:\n");
     for (int i = 0; i < data->gantt_count; i++) {
         printf(" [%d - %d: %s]", data->gantt[i].start_time, data->gantt[i].end_time, data->gantt[i].job_id);
-        if ((i + 1) % 6 == 0 && (i + 1) < data->gantt_count) {
-            printf("\n");
-        }
+        if ((i + 1) % 6 == 0 && (i + 1) < data->gantt_count) printf("\n");
     }
     printf("\n\n");
 
-    /* Formatted ASCII Gantt blocks (wrapped in chunks if needed) */
     const int CHUNK_SIZE = 10;
     for (int start_idx = 0; start_idx < data->gantt_count; start_idx += CHUNK_SIZE) {
         int end_idx = start_idx + CHUNK_SIZE;
         if (end_idx > data->gantt_count) end_idx = data->gantt_count;
+        int count = end_idx - start_idx;
 
-        /* Top border */
-        for (int i = start_idx; i < end_idx; i++) {
-            printf("+---------");
-        }
-        printf("+\n");
-
-        /* Job labels inside boxes */
-        for (int i = start_idx; i < end_idx; i++) {
-            printf("| %-7s ", data->gantt[i].job_id);
-        }
+        print_border(count);
+        for (int i = start_idx; i < end_idx; i++) printf("| %-7s ", data->gantt[i].job_id);
         printf("|\n");
+        print_border(count);
 
-        /* Bottom border */
-        for (int i = start_idx; i < end_idx; i++) {
-            printf("+---------");
-        }
-        printf("+\n");
-
-        /* Timeline marks below boxes */
-        for (int i = start_idx; i < end_idx; i++) {
-            printf("%-10d", data->gantt[i].start_time);
-        }
+        for (int i = start_idx; i < end_idx; i++) printf("%-10d", data->gantt[i].start_time);
         printf("%d\n\n", data->gantt[end_idx - 1].end_time);
     }
 }
@@ -71,8 +56,8 @@ static void print_metrics_table(const ReportData *data) {
     printf("%-28s %-12.2f %-10.2f %-10.2f\n",
            "Average", data->avg_turnaround, data->avg_waiting, data->avg_response);
     printf("================================================================================\n");
-    printf("Total Execution Time : %d time units\n", data->total_time);
-    printf("Context Switches     : %d\n", data->context_switches);
+    printf("Total Execution Time : %d time units\nContext Switches     : %d\n",
+           data->total_time, data->context_switches);
     printf("================================================================================\n\n");
 }
 
@@ -82,14 +67,9 @@ int main(int argc, char *argv[]) {
 
     /* Part 6: Wait on named semaphore posted by scheduler after writing data */
     sem_t *report_sem = sem_open(SEM_NAME, 0);
-    if (report_sem == SEM_FAILED) {
-        perror("[Report Process] sem_open failed");
-        return 1;
-    }
-
-    if (sem_wait(report_sem) != 0) {
+    if (report_sem == SEM_FAILED || sem_wait(report_sem) != 0) {
         perror("[Report Process] sem_wait failed");
-        sem_close(report_sem);
+        if (report_sem != SEM_FAILED) sem_close(report_sem);
         return 1;
     }
 
@@ -110,15 +90,11 @@ int main(int argc, char *argv[]) {
     }
 
     /* Print Header */
-    printf("\n");
-    printf("################################################################################\n");
+    printf("\n################################################################################\n");
     printf("             REPORT PROCESS (PID: %d) EXEC'D SUCCESSFULLY\n", getpid());
     printf("             ALGORITHM: %s", data->algorithm);
-    if (data->quantum > 0) {
-        printf(" (quantum = %d)", data->quantum);
-    }
-    printf("\n");
-    printf("################################################################################\n");
+    if (data->quantum > 0) printf(" (quantum = %d)", data->quantum);
+    printf("\n################################################################################\n");
 
     print_gantt_chart(data);
     print_metrics_table(data);
@@ -127,6 +103,5 @@ int main(int argc, char *argv[]) {
     munmap(data, sizeof(ReportData));
     close(shm_fd);
     sem_close(report_sem);
-
     return 0;
 }
