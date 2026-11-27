@@ -8,6 +8,7 @@ Project: Progetto Scintilla (Mini CPU Scheduler)
 Group Members:
 - Ahmad Raza (Roll No: 24i-2574) - Scheduler Dispatcher, Thread Management, Semaphores, Logger Process (Parts 2,3 & 3)
 - Ali Farooq (Roll No: 24i-2576) - IPC Pipes, Input Parsing, Job Table & Shared Memory Report, Metrics & Gantt Chart
+- Abeer Hashmi (Roll No: 22i-0606)
 
 (Note: Every group member contributed to the architectural design, synchronization
 protocol, testing, and debugging.)
